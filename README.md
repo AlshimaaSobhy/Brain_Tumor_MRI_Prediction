@@ -1,119 +1,244 @@
 # Brain Tumor Classification using Deep Learning
 
-This project builds and compares multiple deep learning models to classify brain MRI images into four categories:
+## Overview
+This project presents a deep learning-based system for **brain tumor classification** using MRI images. The model classifies brain MRI scans into four categories:
 
-Glioma
-Meningioma
-Pituitary tumor
-No tumor
+- Glioma
+- Meningioma
+- Pituitary Tumor
+- No Tumor
 
-We use both a custom CNN and transfer learning models (VGG16 and ResNet50) to evaluate performance.
+The project compares the performance of:
+- Custom CNN (Baseline Model)
+- VGG16 Transfer Learning
+- ResNet50 Transfer Learning
 
-## Dataset
+The main objective is to evaluate different deep learning architectures for medical image classification and identify the most effective model for brain tumor detection.
 
-The dataset is organized into training and testing folders:
+---
 
+# Dataset
+
+The dataset contains MRI brain scan images divided into:
+
+- Training Set
+- Testing Set
+
+## Classes
+- `glioma`
+- `meningioma`
+- `pituitary`
+- `notumor`
+
+## Dataset Structure
+
+```bash
 Brain_Tumor_Dataset/
- ├── Training/
- └── Testing/
+│
+├── Training/
+│   ├── glioma/
+│   ├── meningioma/
+│   ├── pituitary/
+│   └── notumor/
+│
+└── Testing/
+    ├── glioma/
+    ├── meningioma/
+    ├── pituitary/
+    └── notumor/
+```
 
-Each folder contains four classes:
+---
 
-glioma
-meningioma
-pituitary
-notumor
+# Technologies Used
 
-## Total samples:
+- Python
+- TensorFlow / Keras
+- NumPy
+- Matplotlib
+- OpenCV
+- Scikit-learn
+- Google Colab
 
-Training: 4571 images
-Validation: 1141 images
-Testing: 1311 images
+---
 
-## Preprocessing & Augmentation
+# Data Preprocessing
 
-Images are:
+The following preprocessing and augmentation techniques were applied:
 
-Resized to 128 × 128
-Normalized (rescaled to [0,1])
-Augmented using:
-Rotation
-Zoom
-Horizontal flip
-Width/height shift
-## Models Used
-1. Custom CNN (Baseline)
+- Image resizing to `128 × 128`
+- Pixel normalization (`rescale=1./255`)
+- Rotation augmentation
+- Width shifting
+- Height shifting
+- Shearing
+- Zoom augmentation
+- Horizontal flipping
+- Validation split (`20%`)
 
-A deep convolutional neural network with:
+---
 
-4 Conv layers (32 → 256 filters)
-Batch Normalization
-MaxPooling
-Dropout regularization
-Dense classifier (Softmax)
-2. Transfer Learning - VGG16
-Pretrained on ImageNet
-Frozen convolutional base
-Custom dense head (256 neurons + dropout)
-3. Transfer Learning - ResNet50
-Pretrained on ImageNet
-Global Average Pooling
-Dense + Dropout classifier
-## Results
-Model	Test Accuracy
-CNN Baseline	~79.8%
-VGG16	~81.9%
-ResNet50	~51.6%
+# Models Implemented
 
-✔ Best performing model: VGG16
+## 1. CNN Baseline Model
 
-## Observations
-VGG16 performed best in terms of accuracy and stability.
-CNN baseline achieved strong performance without pretraining.
-ResNet50 underperformed likely due to:
-Limited fine-tuning
-Small image resolution (128×128)
-## Evaluation Metrics
+Custom Convolutional Neural Network consisting of:
 
-Each model is evaluated using:
+- Conv2D layers
+- Batch Normalization
+- MaxPooling layers
+- Dropout layer
+- Dense layers
 
-Accuracy
-Precision / Recall / F1-score
-Confusion Matrix
-ROC Curves (per class)
-## Training Details
-Optimizer: Adam (lr = 1e-4)
-Loss function: Categorical Crossentropy
-Batch size: 32
-Epochs: 15–20
-Callbacks:
-EarlyStopping
-ReduceLROnPlateau
-ModelCheckpoint
-## Tech Stack
-Python 
-TensorFlow / Keras
-NumPy
-Matplotlib
-Scikit-learn
-OpenCV
-Google Colab
-## How to Run
-Clone the repository:
+---
+
+## 2. VGG16 Transfer Learning
+
+Pretrained `VGG16` model with:
+
+- Frozen convolutional base
+- Custom dense classifier
+- Dropout regularization
+
+---
+
+## 3. ResNet50 Transfer Learning
+
+Pretrained `ResNet50` model with:
+
+- Frozen pretrained layers
+- Global Average Pooling
+- Fully connected classifier
+
+---
+
+# Training Configuration
+
+| Parameter | Value |
+|---|---|
+| Optimizer | Adam |
+| Learning Rate | 1e-4 |
+| Loss Function | Categorical Crossentropy |
+| Batch Size | 32 |
+| Image Size | 128×128 |
+
+## Epochs
+- CNN → 20 Epochs
+- VGG16 → 15 Epochs
+- ResNet50 → 15 Epochs
+
+## Callbacks Used
+- EarlyStopping
+- ModelCheckpoint
+- ReduceLROnPlateau
+
+---
+
+# Results
+
+| Model | Test Accuracy |
+|---|---|
+| CNN Baseline | 79.79% |
+| VGG16 Transfer Learning | 81.85% |
+| ResNet50 Transfer Learning | 51.64% |
+
+---
+
+# Best Performing Model
+
+The **VGG16 Transfer Learning** model achieved the highest performance with:
+
+- **81.85% Test Accuracy**
+- Better generalization capability
+- Strong classification performance across all classes
+
+---
+
+# Evaluation Metrics
+
+The models were evaluated using:
+
+- Accuracy
+- Precision
+- Recall
+- F1-Score
+- Confusion Matrix
+- ROC Curve & AUC
+
+---
+
+# Sample Outputs
+
+## Confusion Matrix
+The project generates confusion matrices to visualize model predictions and classification performance.
+
+## ROC Curves
+ROC curves are plotted for all tumor classes to compare AUC scores.
+
+## Training Curves
+Training and validation accuracy/loss graphs are generated for performance analysis.
+
+---
+
+# Key Findings
+
+- Transfer learning improved model performance significantly.
+- VGG16 outperformed both the custom CNN and ResNet50.
+- ResNet50 underperformed due to insufficient fine-tuning and dataset complexity.
+- Data augmentation reduced overfitting and improved generalization.
+
+---
+
+# Future Improvements
+
+Possible enhancements include:
+
+- Fine-tuning pretrained layers
+- Using larger image resolutions
+- Implementing EfficientNet or DenseNet
+- Applying advanced augmentation techniques
+- Hyperparameter optimization
+- Deploying the model as a web application
+
+---
+
+# How to Run the Project
+
+## 1. Clone the Repository
+
+```bash
 git clone https://github.com/your-username/brain-tumor-classification.git
-Install dependencies:
-pip install -r requirements.txt
-Run the notebook:
-jupyter notebook brain_tumor_classification.ipynb
+cd brain-tumor-classification
+```
 
-## Sample Output
-Training accuracy/loss curves
-Confusion matrices
-ROC curves per class
-Sample image predictions
-## Future Improvements
-Fine-tune ResNet50 instead of freezing all layers
-Try EfficientNet / DenseNet
-Increase image resolution (224×224)
-Add Grad-CAM explainability for medical interpretation
-Deploy as a web app (Streamlit / Flask)
+## 2. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+## 3. Run the Notebook
+
+Open the notebook using:
+
+- Jupyter Notebook
+- Google Colab
+
+Then execute all cells sequentially.
+
+---
+
+# Project Workflow
+
+```text
+Dataset Collection
+        ↓
+Data Preprocessing & Augmentation
+        ↓
+Model Building
+        ↓
+Training
+        ↓
+Evaluation
+        ↓
+Performance Comparison
